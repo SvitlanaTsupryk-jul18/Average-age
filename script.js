@@ -325,6 +325,8 @@ let columnNames = [
     "children"
 ];
 
+showPeople("people", ANCESTRY_FILE);
+
 function showPeople(element, people) {
     let elem = document.querySelector(`.${element}`);
 
@@ -339,14 +341,14 @@ function showPeople(element, people) {
     for (let i = 0; i < columnNames.length; i++) {
         let th = document.createElement("th");
         th.appendChild(document.createTextNode(columnNames[i]));
-        thead.appendChild(th);
+        tr.appendChild(th);
     }
-
+    thead.appendChild(tr);
     //tbody
     let tbody = document.createElement("tbody");
     table.appendChild(tbody);
 
-    // people.forEach(item=>nn.push(item.born));
+
     for (let i = 0; i < people.length; i++) {
         let tr = document.createElement("tr");
         tbody.appendChild(tr);
@@ -376,6 +378,31 @@ function showPeople(element, people) {
             tr.appendChild(td);
         }
     }
+    addSex(table);
+}
+
+function addSex(table) {
+    //find cellindex in header
+    let headers = [...table.tHead.rows[0].cells];
+    let colNumber;
+    headers.forEach(element => {
+        if (element.textContent === 'sex') {
+            colNumber = element.cellIndex;
+        }
+    });
+
+    //find colunm in every row in tbody which is in colunm sex
+    for (let i = 1; i < table.rows.length; i++) {
+        table.rows[i].cells[colNumber].textContent === 'm' ?
+            table.rows[i].classList.add("person--male") :
+            table.rows[i].classList.add("person--female");
+    }
+
+    //add color to each woman
+    [...table.rows].forEach(element => {
+        if (element.classList.contains("person--female")) {
+            element.style.background = 'lightpink';
+        }
+    });
 
 }
-showPeople("people", ANCESTRY_FILE);
