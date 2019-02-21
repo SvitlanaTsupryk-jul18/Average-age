@@ -324,3 +324,58 @@ let columnNames = [
     "father",
     "children"
 ];
+
+function showPeople(element, people) {
+    let elem = document.querySelector(`.${element}`);
+
+    /* 1. Вставляет table в документ сразу. а затем элементы */
+    let table = document.createElement("table");
+    elem.appendChild(table);
+    //thead
+    let thead = document.createElement("thead");
+    table.appendChild(thead);
+
+    let tr = document.createElement("TR");
+    for (let i = 0; i < columnNames.length; i++) {
+        let th = document.createElement("th");
+        th.appendChild(document.createTextNode(columnNames[i]));
+        thead.appendChild(th);
+    }
+
+    //tbody
+    let tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+
+    // people.forEach(item=>nn.push(item.born));
+    for (let i = 0; i < people.length; i++) {
+        let tr = document.createElement("tr");
+        tbody.appendChild(tr);
+
+        for (let j = 0; j < columnNames.length; j++) {
+            let td = document.createElement("td");
+            let cell = people[i][columnNames[j]];
+
+            switch (columnNames[j]) {
+                case "id":
+                    cell = i + 1;
+                    break;
+                case "age":
+                    cell = people[i].died - people[i].born;
+                    break;
+                case "century":
+                    cell = Math.ceil(people[i].died / 100);
+                    break;
+                    // case "children":
+                    // cell = people[i].died / 100);
+                    // break;
+                default:
+                    cell = people[i][columnNames[j]];
+            }
+
+            td.appendChild(document.createTextNode(cell));
+            tr.appendChild(td);
+        }
+    }
+
+}
+showPeople("people", ANCESTRY_FILE);
