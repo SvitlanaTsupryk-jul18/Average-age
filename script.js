@@ -380,3 +380,29 @@ function showPeople(element, people) {
     }
     addSex(table);
 }
+
+function addSex(table) {
+    //find cellindex in header
+    let headers = [...table.tHead.rows[0].cells];
+    let colNumber;
+    headers.forEach(element => {
+        if (element.textContent === 'sex') {
+            colNumber = element.cellIndex;
+        }
+    });
+
+    //find colunm in every row in tbody which is in colunm sex
+    for (let i = 1; i < table.rows.length; i++) {
+        table.rows[i].cells[colNumber].textContent === 'm' ?
+            table.rows[i].classList.add("person--male") :
+            table.rows[i].classList.add("person--female");
+    }
+
+    //add color to each woman
+    [...table.rows].forEach(element => {
+        if (element.classList.contains("person--female")) {
+            element.style.background = 'lightpink';
+        }
+    });
+
+}
