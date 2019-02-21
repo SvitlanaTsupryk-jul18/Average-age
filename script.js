@@ -379,8 +379,10 @@ function showPeople(element, people) {
         }
     }
     addSex(table);
+    addSevetteenth(table);
 }
 
+///#2
 function addSex(table) {
     //find cellindex in header
     let headers = [...table.tHead.rows[0].cells];
@@ -405,4 +407,17 @@ function addSex(table) {
         }
     });
 
+}
+
+///#4
+function addSevetteenth(table) {
+    //find cellindex in columnNames
+    let colNumber = columnNames.indexOf('century');
+
+    //find colunm in every row in tbody which lived in 17 century
+    [...table.rows].forEach(element => {
+        if (element.cells[colNumber].textContent === '17') {
+            element.classList.add("person--lived-in-17");
+        }
+    });
 }
