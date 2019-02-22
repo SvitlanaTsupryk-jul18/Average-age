@@ -386,7 +386,8 @@ function showPeople(element, people) {
     }
 
     addSex(table);
-    addSevetteenth(table);
+    findSevetteenth(table);
+    findParents(table)
     longLivers(table);
 }
 
@@ -411,14 +412,40 @@ function addSex(table) {
     //add color to each woman
     [...table.rows].forEach(element => {
         if (element.classList.contains("person--female")) {
-            element.style.background = 'lightpink';
+            element.style.background = "lightpink";
+        }
+    });
+}
+
+///#3
+function findParents(table) {
+    //find cellindex in columnNames
+    let colNumber = columnNames.indexOf('children');
+    let parents = [];
+
+    //make array of parents from children column
+    [...table.rows].forEach(element => {
+        if (element.cells[colNumber].textContent) {
+            parents.push(element.cells[colNumber].textContent)
         }
     });
 
+    //add classes for mothers and fathers
+    for (let i = 1; i < table.rows.length; i++) {
+
+        parents.forEach(element => {
+            if (element === table.rows[i].cells[columnNames.indexOf('name')].textContent) {
+                table.rows[i].cells[columnNames.indexOf('sex')].textContent === "m" ?
+                    table.rows[i].classList.add("person--father") :
+                    table.rows[i].classList.add("person--mother");
+            }
+        });
+
+    }
 }
 
 ///#4
-function addSevetteenth(table) {
+function findSevetteenth(table) {
     //find cellindex in columnNames
     let colNumber = columnNames.indexOf('century');
 
@@ -434,7 +461,7 @@ function addSevetteenth(table) {
 function longLivers(table) {
     table.style.borderCollapse = "collapse";
 
-    //find colunm in every row in tbody which lived in 17 century
+    //find colunm in every row in tbody which lived in more 65 years
     [...table.rows].forEach(element => {
         if (element.cells[columnNames.indexOf('age')].textContent > 65) {
             element.style.border = "1px solid green";

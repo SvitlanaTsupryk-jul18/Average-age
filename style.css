@@ -6,3 +6,11 @@ th {
 th {
     text-transform: uppercase;
 }
+
+.person--female {
+    background-color: lightpink;
+}
+
+.person--father {
+    background-color: cornflowerblue;
+}
