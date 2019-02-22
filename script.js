@@ -425,6 +425,7 @@ function addSevetteenth(table) {
 
 ///#5
 function longLivers(table) {
+    table.style.borderCollapse = "collapse";
 
     //find colunm in every row in tbody which lived in 17 century
     [...table.rows].forEach(element => {
