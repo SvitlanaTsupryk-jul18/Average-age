@@ -380,6 +380,7 @@ function showPeople(element, people) {
     }
     addSex(table);
     addSevetteenth(table);
+    longLivers(table);
 }
 
 ///#2
@@ -418,6 +419,18 @@ function addSevetteenth(table) {
     [...table.rows].forEach(element => {
         if (element.cells[colNumber].textContent === '17') {
             element.classList.add("person--lived-in-17");
+        }
+    });
+}
+
+///#5
+function longLivers(table) {
+
+    //find colunm in every row in tbody which lived in 17 century
+    [...table.rows].forEach(element => {
+        if (element.cells[columnNames.indexOf('age')].textContent > 65) {
+            console.log(element);
+            element.style.border = "2px solid green";
         }
     });
 }
