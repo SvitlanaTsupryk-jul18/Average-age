@@ -355,7 +355,7 @@ function showPeople(element, people) {
 
         for (let j = 0; j < columnNames.length; j++) {
             let td = document.createElement("td");
-            let cell = people[i][columnNames[j]];
+            let cell;
 
             switch (columnNames[j]) {
                 case "id":
@@ -367,9 +367,9 @@ function showPeople(element, people) {
                 case "century":
                     cell = Math.ceil(people[i].died / 100);
                     break;
-                    // case "children":
-                    // cell = people[i].died / 100);
-                    // break;
+                case "children":
+                    cell = children(people, people[i]);
+                    break;
                 default:
                     cell = people[i][columnNames[j]];
             }
@@ -378,6 +378,13 @@ function showPeople(element, people) {
             tr.appendChild(td);
         }
     }
+
+    function children(arr, person) {
+        let childrens = arr.filter(el =>
+            el.mother === person.name || el.father === person.name).map(el => el.name);
+        return childrens;
+    }
+
     addSex(table);
     addSevetteenth(table);
     longLivers(table);
@@ -430,8 +437,7 @@ function longLivers(table) {
     //find colunm in every row in tbody which lived in 17 century
     [...table.rows].forEach(element => {
         if (element.cells[columnNames.indexOf('age')].textContent > 65) {
-            console.log(element);
-            element.style.border = "2px solid green";
+            element.style.border = "1px solid green";
         }
     });
 }
