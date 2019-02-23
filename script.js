@@ -389,6 +389,7 @@ function showPeople(element, people) {
     findSevetteenth(table);
     findParents(table)
     longLivers(table);
+    spaning(people, table);
 }
 
 ///#2
@@ -467,4 +468,39 @@ function longLivers(table) {
             element.style.border = "1px solid green";
         }
     });
+}
+
+//#6
+function spaning(people, table) {
+    //names of people that was borning before 1650
+
+
+    let bornBefore = people.filter(el => el.born < 1650).map(el => el.name);
+    let diedAfter = people.filter(el => el.died > 1800).map(el => el.name);
+    console.log(table.rows.cells);
+
+
+    [...table.rows].forEach(element => {
+        [...element.cells].forEach(elem => {
+            bornBefore.forEach(el => {
+                if (elem.textContent === el) {
+                    console.log(elem)
+                };
+            })
+            diedAfter.forEach(el => {
+                if (elem.textContent === el) {
+                    console.log(elem)
+                };
+            })
+        });
+
+    });
+
+    function inSpan(text) {
+
+    }
+
+
+
+
 }
