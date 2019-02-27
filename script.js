@@ -371,7 +371,9 @@ function showPeople(element, people) {
                     cell = children(people, people[i]);
                     break;
                 default:
-                    cell = people[i][columnNames[j]];
+                    people[i][columnNames[j]] === null ?
+                        (cell = "") :
+                        (cell = people[i][columnNames[j]]);
             }
 
             td.appendChild(document.createTextNode(cell));
@@ -474,33 +476,82 @@ function longLivers(table) {
 function spaning(people, table) {
     //names of people that was borning before 1650
 
-
-    let bornBefore = people.filter(el => el.born < 1650).map(el => el.name);
+    let bornBefore = people.filter(el => el.born < 1750).map(el => el.name);
     let diedAfter = people.filter(el => el.died > 1800).map(el => el.name);
-    console.log(table.rows.cells);
-
-
+    //find in each td wich includes name from arrays
     [...table.rows].forEach(element => {
         [...element.cells].forEach(elem => {
             bornBefore.forEach(el => {
-                if (elem.textContent === el) {
-                    console.log(elem)
-                };
-            })
+                if (elem.textContent.includes(el)) {
+                    inSpan(elem, el, "person--before");
+                }
+            });
             diedAfter.forEach(el => {
-                if (elem.textContent === el) {
-                    console.log(elem)
-                };
-            })
+                if (elem.textContent.includes(el)) {
+                    inSpan(elem, el, "person--after");
+                    return;
+                }
+            });
         });
-
     });
 
-    function inSpan(text) {
+    function inSpan(textCell, name, spanClass) {
+        let spanName = document.createElement("span");
+        spanName.innerHTML = name;
+        spanName.classList.add(spanClass);
+        let names = textCell.textContent.split(",");
 
+        if (names.length === 1) {
+            textCell.childNodes[0].replaceWith(spanName);
+        } else {
+            console.log(names.length);
+            textCell.textContent = "";
+            console.log(textCell);
+            names.forEach(elem => {
+                bornBefore.forEach(el => {
+                    if (elem === el) {
+                        textCell.innerHTML === "" ?
+                            textCell.innerHTML += `<span class="${spanClass}">${elem}</span>` :
+                            textCell.innerHTML += `,<span class="${spanClass}">${elem}</span>`;
+                    }
+                });
+            });
+        }
     }
+    // //#6,2
+    // function spaning(people, table) {
+    //     //names of people that was borning before 1650
+
+    //     let bornBefore = people.filter(el => el.born < 1650).map(el => el.name);
+    //     let diedAfter = people.filter(el => el.died > 1800).map(el => el.name);
+    //     //find in each td wich includes name from arrays
+    //     [...table.rows].forEach(element => {
+    //       [...element.cells].forEach(elem => {
+    //         bornBefore.forEach(el => {
+    //           if (elem.textContent.includes(el)) {
+    //             inSpan(elem, el, "person--before");
+    //           }
+    //         });
+    //         diedAfter.forEach(el => {
+    //           if (elem.textContent.includes(el)) {
+    //             inSpan(elem, el, "person--after");
+    //           }
+    //         });
+    //       });
+    //     });
+
+    //     function inSpan(textCell, name, spanClass) {
+    //       let spanName = document.createElement("span");
+    //       spanName.innerHTML = name;
+    //       spanName.classList.add(spanClass);
+    //       //let names = textCell.textContent.split(',');
+    //       textCell.childNodes[0].replaceWith(spanName);
+    //     }
 
 
 
+}
 
+function getPeopleHTML() {
+    return document.body.innerHTML;
 }

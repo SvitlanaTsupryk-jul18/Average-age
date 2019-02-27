@@ -14,3 +14,11 @@ th {
 .person--father {
     background-color: cornflowerblue;
 }
+
+.person--before {
+    text-decoration: line-through;
+}
+
+.person--after {
+    font-weight: bold;
+}
