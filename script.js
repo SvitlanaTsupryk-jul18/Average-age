@@ -341,9 +341,18 @@ function showPeople(element, people) {
     for (let i = 0; i < columnNames.length; i++) {
         let th = document.createElement("th");
         th.appendChild(document.createTextNode(columnNames[i]));
+
+        ///add inputs
+        if (i === 1 || i === 7 || i === 8) {
+            let input = document.createElement("input");
+            input.placeholder = `search by ${columnNames[i]}`;
+            th.appendChild(input);
+        }
         tr.appendChild(th);
     }
     thead.appendChild(tr);
+
+
     //tbody
     let tbody = document.createElement("tbody");
     table.appendChild(tbody);
@@ -384,6 +393,7 @@ function showPeople(element, people) {
     function children(arr, person) {
         let childrens = arr.filter(el =>
             el.mother === person.name || el.father === person.name).map(el => el.name);
+        //console.log(childrens);
         return childrens;
     }
 
@@ -392,6 +402,11 @@ function showPeople(element, people) {
     findParents(table)
     longLivers(table);
     spaning(people, table);
+    ///part 2
+    sorting(people);
+    filtering(people);
+    onckliked();
+    available();
 }
 
 ///#2
@@ -504,9 +519,7 @@ function spaning(people, table) {
         if (names.length === 1) {
             textCell.childNodes[0].replaceWith(spanName);
         } else {
-            console.log(names.length);
             textCell.textContent = "";
-            console.log(textCell);
             names.forEach(elem => {
                 bornBefore.forEach(el => {
                     if (elem === el) {
@@ -549,9 +562,93 @@ function spaning(people, table) {
     //     }
 
 
-
 }
+////7
 
 function getPeopleHTML() {
+
     return document.body.innerHTML;
+}
+
+let tableHTML = getPeopleHTML();
+
+////8 sort
+
+function sorting(arrayPeople) {
+    let table = document.querySelector(".people");
+    let sorted;
+    table.querySelectorAll("TH").forEach(el => {
+
+        el.addEventListener("click", function (e) {
+            let field = e.target.textContent;
+            // console.log(field);
+            if (field === 'name' || field === 'born' || field === 'died' || field === 'age') {
+                console.log(field);
+                sortByField(field);
+
+                function sortByField(field) {
+                    if (field === 'name') {
+                        sorted = arrayPeople.sort((a, b) => {
+                            return (a[field] > b[field] ? 1 : -1);
+                        });
+                        console.log(1);
+                    } else if (field === 'age') {
+                        sorted = arrayPeople.sort((a, b) => {
+                            return ((a.died - a.born) - (b.died - b.born));
+                        });
+                        console.log(2);
+                    } else if (field === 'born' || field === 'died') {
+                        sorted = arrayPeople.sort((a, b) => {
+                            return (a[field] - b[field]);
+                        });
+                        console.log(3);
+                    }
+
+                    console.log(sorted);
+                }
+                table.removeChild(table.children[0]);
+                showPeople("people", sorted);
+            }
+        })
+    });
+}
+
+///9 filter
+
+function filtering(arrayPeople) {
+    let table = document.querySelector(".people");
+    let filtered;
+    table.querySelectorAll("input").forEach(el => {
+
+        el.addEventListener("change", function (e) {
+            let input = e.target;
+            let column = input.parentElement.textContent;
+            filtered = arrayPeople.filter((person) => person[column] !== null && person[column].toLowerCase().includes(input.value.toLowerCase()));
+            table.removeChild(table.children[0]);
+            showPeople("people", filtered);
+        })
+    });
+}
+
+///10 add border when onckliked
+
+function onckliked() {
+    let tbody = document.querySelector("tbody");
+    let cells = tbody.querySelectorAll("TD");
+
+    tbody.addEventListener("click", function (e) {
+        //for 11 selectable
+        if (!(e.target.closest("TD") && e.target.hasAttribute("data-selectable"))) return;
+        cells.forEach((el) => el.classList.remove("clicked"));
+        e.target.closest("TD").classList.add("clicked");
+    })
+};
+
+///11 add avaible rows
+
+function available() {
+    let tbody = document.querySelector("tbody");
+    let cells = [...tbody.querySelectorAll("TD")];
+    let availables = cells.filter((item) => item.cellIndex === 2 || item.cellIndex === 3 || item.cellIndex === 4);
+    availables.forEach((td) => td.setAttribute("data-selectable", "true"));
 }

@@ -5,6 +5,13 @@ th {
 
 th {
     text-transform: uppercase;
+    font-weight: bold;
+    vertical-align: top;
+    background-color: bisque;
+}
+
+th:hover {
+    background-color: aquamarine;
 }
 
 .person--female {
@@ -21,4 +28,8 @@ th {
 
 .person--after {
     font-weight: bold;
+}
+
+.clicked {
+    border: 2px solid blue;
 }
